@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#000000">
 <title>Stundenplan</title>
 <meta name="apple-mobile-web-app-title" content="Stundenplan">
@@ -325,7 +325,7 @@ nav{position:absolute;z-index:5;left:calc(var(--u)*23.5);width:calc(var(--u)*348
     <div class="card">
       <button class="item" data-act="x"><div class="ico"><svg viewBox="0 0 26 26"><path d="M3 10h4l10-5v16L7 16H3z"/><path d="M5 16l1.5 6h3L8 16M20.5 10v6"/></svg></div><span>Was gibt es Neues</span><svg class="chev" viewBox="0 0 9 15"><path d="M1.5 1.5l6 6-6 6"/></svg></button>
       <button class="item" data-act="x"><div class="ico"><svg viewBox="0 0 26 26"><rect x="2.5" y="2.5" width="21" height="21" rx="2.5"/><path d="M13 7l1.8 3.7 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6z"/></svg></div><span>App bewerten</span><svg class="chev" viewBox="0 0 9 15"><path d="M1.5 1.5l6 6-6 6"/></svg></button>
-      <button class="item" data-act="x"><div class="ico"><svg viewBox="0 0 26 26"><circle cx="13" cy="13" r="10.5"/><path d="M13 11.5v6.5M11.5 18h3M11.5 11.5H13"/><circle cx="13" cy="8" r=".6" fill="#8a9099"/></svg></div><span>Über</span><svg class="chev" viewBox="0 0 9 15"><path d="M1.5 1.5l6 6-6 6"/></svg></button>
+      <button class="item" data-act="about"><div class="ico"><svg viewBox="0 0 26 26"><circle cx="13" cy="13" r="10.5"/><path d="M13 11.5v6.5M11.5 18h3M11.5 11.5H13"/><circle cx="13" cy="8" r=".6" fill="#8a9099"/></svg></div><span>Über</span><svg class="chev" viewBox="0 0 9 15"><path d="M1.5 1.5l6 6-6 6"/></svg></button>
     </div>
     <div class="gap"></div>
     <div class="card">
@@ -771,7 +771,10 @@ CK.forEach(k=>$(k).addEventListener('input',()=>$('cok').classList.add('on')));
 $('cok').addEventListener('click',()=>{ if(!$('cok').classList.contains('on')) return; const c = {}; CK.forEach(k=>c[k]=$(k).value.trim()); store.set('sp_contact',c); closeSheets(); toast('Gespeichert'); });
 document.querySelectorAll('[data-act]').forEach(el=>el.addEventListener('click',()=>{
   const a = el.dataset.act;
-  if(a==='set') openSet(); else if(a==='contact') openContact(); else toast('Nicht verfügbar');
+  if(a==='set') openSet(); else if(a==='contact') openContact();
+  else if(a==='about'){ const sa=navigator.standalone||matchMedia('(display-mode: standalone)').matches;
+    toast('v7 · '+innerHeight+'/'+screen.height+' · top '+$('probe').offsetHeight+' · app '+$('app').offsetHeight+(sa?' · HS':' · Safari')); }
+  else toast('Nicht verfügbar');
 }));
 
 /* ---------- tabs ---------- */
@@ -801,8 +804,7 @@ document.addEventListener('visibilitychange',()=>{ if(!document.hidden) render()
   const standalone = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
   function apply(){
     let h = innerHeight;
-    if (standalone && document.getElementById('probe').offsetHeight > 0) h = Math.max(h, screen.height);
-    document.documentElement.style.setProperty('--apph', h + 'px');
+        document.documentElement.style.setProperty('--apph', h + 'px');
   }
   apply(); addEventListener('resize', apply); addEventListener('orientationchange', ()=>setTimeout(apply,300));
 })();
