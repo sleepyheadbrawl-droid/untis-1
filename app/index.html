@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#000000">
 <title>Stundenplan</title>
 <meta name="apple-mobile-web-app-title" content="Stundenplan">
@@ -29,7 +29,7 @@ html,body{background:#000;height:100%;overscroll-behavior:none}
 #probe{position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-top,0px);visibility:hidden}
 body{font-family:-apple-system,"SF Pro Text",system-ui,Roboto,"Helvetica Neue",sans-serif;color:#eef0f3;overflow:hidden;-webkit-user-select:none;user-select:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-#app{position:fixed;top:0;left:0;right:0;width:min(100vw,480px);height:var(--apph,100%);margin:0 auto;background:#000;overflow:hidden;overflow:clip}
+#app{position:absolute;top:0;left:0;right:0;width:min(100vw,480px);height:var(--apph,100%);margin:0 auto;background:#000;overflow:hidden;overflow:clip}
 /* ---------- timetable ---------- */
 #vplan{position:absolute;inset:0;display:flex;flex-direction:column;background:#1d1e21}
 header{background:#000;flex:none;position:relative;z-index:3;padding-top:var(--top)}
@@ -773,7 +773,7 @@ document.querySelectorAll('[data-act]').forEach(el=>el.addEventListener('click',
   const a = el.dataset.act;
   if(a==='set') openSet(); else if(a==='contact') openContact();
   else if(a==='about'){ const sa=navigator.standalone||matchMedia('(display-mode: standalone)').matches;
-    toast('v7 · '+innerHeight+'/'+screen.height+' · top '+$('probe').offsetHeight+' · app '+$('app').offsetHeight+(sa?' · HS':' · Safari')); }
+    toast('v8 · '+innerHeight+'/'+screen.height+' · top '+$('probe').offsetHeight+' · app '+$('app').offsetHeight+(sa?' · HS':' · Safari')); }
   else toast('Nicht verfügbar');
 }));
 
@@ -804,9 +804,13 @@ document.addEventListener('visibilitychange',()=>{ if(!document.hidden) render()
   const standalone = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
   function apply(){
     let h = innerHeight;
-        document.documentElement.style.setProperty('--apph', h + 'px');
+    /* content sits under the status bar, but iOS cuts the page short at the bottom: stretch to the real screen */
+    if (standalone && document.getElementById('probe').offsetHeight > 0) h = Math.max(h, screen.height);
+    document.documentElement.style.setProperty('--apph', h + 'px');
   }
-  apply(); addEventListener('resize', apply); addEventListener('orientationchange', ()=>setTimeout(apply,300));
+  apply(); addEventListener('resize', apply);
+  /* TEMP: show size check for 4 s at start (remove later) */
+  if (standalone) setTimeout(()=>{ toast('v8 · '+innerHeight+'/'+screen.height+' · top '+document.getElementById('probe').offsetHeight+' · app '+document.getElementById('app').offsetHeight); clearTimeout(tt); tt=setTimeout(()=>toastEl.classList.remove('on'),4000); }, 600); addEventListener('orientationchange', ()=>setTimeout(apply,300));
 })();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){
   let reloaded=false;
