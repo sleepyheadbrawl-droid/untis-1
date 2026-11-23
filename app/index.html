@@ -25,7 +25,8 @@ LAYOUT: every size in units of a 393pt-wide phone (n = phone points), scaled to 
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{background:#000;height:100%;overscroll-behavior:none}
 /* solid black behind the iPhone status bar, so iOS shows plain black there instead of blurring the page */
-#sbar{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:#000;z-index:99;pointer-events:none}
+#sbar{position:fixed;top:0;left:0;right:0;height:calc(env(safe-area-inset-top,0px) + calc(var(--u)*52));background:#000;z-index:0;pointer-events:none}
+#app{z-index:1}
 #probe{position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-top,0px);visibility:hidden}
 body{font-family:-apple-system,"SF Pro Text",system-ui,Roboto,"Helvetica Neue",sans-serif;color:#eef0f3;overflow:hidden;-webkit-user-select:none;user-select:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -773,7 +774,7 @@ document.querySelectorAll('[data-act]').forEach(el=>el.addEventListener('click',
   const a = el.dataset.act;
   if(a==='set') openSet(); else if(a==='contact') openContact();
   else if(a==='about'){ const sa=navigator.standalone||matchMedia('(display-mode: standalone)').matches;
-    toast('v8 · '+innerHeight+'/'+screen.height+' · top '+$('probe').offsetHeight+' · app '+$('app').offsetHeight+(sa?' · HS':' · Safari')); }
+    toast('v9 · '+innerHeight+'/'+screen.height+' · top '+$('probe').offsetHeight+' · app '+$('app').offsetHeight+(sa?' · HS':' · Safari')); }
   else toast('Nicht verfügbar');
 }));
 
@@ -810,7 +811,7 @@ document.addEventListener('visibilitychange',()=>{ if(!document.hidden) render()
   }
   apply(); addEventListener('resize', apply);
   /* TEMP: show size check for 4 s at start (remove later) */
-  if (standalone) setTimeout(()=>{ toast('v8 · '+innerHeight+'/'+screen.height+' · top '+document.getElementById('probe').offsetHeight+' · app '+document.getElementById('app').offsetHeight); clearTimeout(tt); tt=setTimeout(()=>toastEl.classList.remove('on'),4000); }, 600); addEventListener('orientationchange', ()=>setTimeout(apply,300));
+  if (standalone) setTimeout(()=>{ toast('v9 · '+innerHeight+'/'+screen.height+' · top '+document.getElementById('probe').offsetHeight+' · app '+document.getElementById('app').offsetHeight); clearTimeout(tt); tt=setTimeout(()=>toastEl.classList.remove('on'),4000); }, 600); addEventListener('orientationchange', ()=>setTimeout(apply,300));
 })();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){
   let reloaded=false;
