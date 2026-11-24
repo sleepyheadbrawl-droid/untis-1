@@ -6,14 +6,14 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#000000">
-<title>Stundi</title>
-<meta name="apple-mobile-web-app-title" content="Stundi">
+<title>Stundenplan</title>
+<meta name="apple-mobile-web-app-title" content="Stundenplan">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
 <style>
 /*
-VOICE: Stundi, Matteo's own timetable app, dark mode, violet accent
+VOICE: faithful copy of the user's school timetable app, dark mode
 IDEA: the phone app itself: Start, Stundenplan, Mitteilungen, Profil
 PICTURE: the lesson grid, swipeable, with detail sheets
 COLOUR and TYPE: black chrome, #1c1c1e cards, slate lessons, subject colour bars; system font
@@ -49,7 +49,7 @@ header{background:#000;flex:none;position:relative;z-index:3;padding-top:var(--t
 .day{position:absolute;top:0;height:100%;text-align:center}
 .day b{display:block;font-weight:400;font-size:calc(var(--u)*12.7);color:#c9ccd1;line-height:calc(var(--u)*16);margin-top:calc(var(--u)*9.7)}
 .day strong{display:block;font-size:calc(var(--u)*16.5);font-weight:600;color:#eceef1;line-height:calc(var(--u)*21)}
-.day.today b,.day.today strong{color:#a78bfa}
+.day.today b,.day.today strong{color:#f2703f}
 .sep{position:absolute;top:0;bottom:0;width:1px;background:#242528}
 #scroll{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;-webkit-overflow-scrolling:touch}
 #grid{position:relative;height:calc(var(--u)*770)}
@@ -58,18 +58,14 @@ header{background:#000;flex:none;position:relative;z-index:3;padding-top:var(--t
 .tl.t{font-size:calc(var(--u)*11.4);color:#cfd1d5}
 .tl.n{font-size:calc(var(--u)*15);color:#e6e8eb}
 #lessons{position:absolute;inset:0;will-change:transform}
-.clipx{position:absolute;top:0;bottom:0;right:0;left:calc(var(--u)*43);overflow:hidden}
-.clipx>.days,.clipx>#lessons{inset:0 0 0 calc(var(--u)*-43)}
-.pg{position:absolute;top:0;bottom:0;left:0;width:100%}
-.pg.nb{pointer-events:none}
 .les{position:absolute;border-radius:calc(var(--u)*3.3);background:#343a44;overflow:hidden;cursor:pointer}
 .les.fut{background:#5f6b7a}
 .les .bar{position:absolute;left:calc(var(--u)*3.8);top:calc(var(--u)*3.8);bottom:calc(var(--u)*3.8);width:calc(var(--u)*3.3);border-radius:calc(var(--u)*2)}
 .les .tx{position:absolute;left:calc(var(--u)*12);right:calc(var(--u)*2);top:calc(var(--u)*3.6);font-size:calc(var(--u)*12.4);line-height:calc(var(--u)*14.3);white-space:nowrap;overflow:hidden}
 .les .tx div:first-child{font-weight:700}
 .les.cancel .tx div{text-decoration:line-through;text-decoration-thickness:calc(var(--u)*1.1)}
-.les.cancel{box-shadow:inset 0 0 0 calc(var(--u)*1.4) #ff5c8a}
-.les.cancel.fut{background:#5a1f44}
+.les.cancel{box-shadow:inset 0 0 0 calc(var(--u)*1.4) #e2344f}
+.les.cancel.fut{background:#74162f}
 .les.change{box-shadow:inset 0 0 0 calc(var(--u)*1.4) #3e9a77}
 .les.change.fut{background:#24503f;box-shadow:inset 0 0 0 calc(var(--u)*1.4) #66d4ad}
 .les.exam{box-shadow:inset 0 0 0 calc(var(--u)*1.4) #f2a531}
@@ -116,7 +112,7 @@ header{background:#000;flex:none;position:relative;z-index:3;padding-top:var(--t
 .car>*{flex:none;width:calc(var(--u)*336.7);scroll-snap-align:center}
 .ann{margin-top:calc(var(--u)*23.4)}
 .ann .c{background:#1c1c1e;border-radius:calc(var(--u)*28);overflow:hidden;height:calc(var(--u)*149.7)}
-.ann .h{height:calc(var(--u)*50);background:#a78bfa;display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--u)*17) 0 calc(var(--u)*16)}
+.ann .h{height:calc(var(--u)*50);background:#f0ab60;display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--u)*17) 0 calc(var(--u)*16)}
 .ann .h svg{width:calc(var(--u)*25);height:calc(var(--u)*25);fill:none;stroke:#fff;stroke-width:1.6;stroke-linejoin:round}
 .ann .neu{border:1.5px solid #fff;border-radius:calc(var(--u)*6);color:#fff;font-size:calc(var(--u)*13.5);padding:calc(var(--u)*1) calc(var(--u)*8)}
 .ann p{font-size:calc(var(--u)*16.3);color:#e6e8eb;padding:calc(var(--u)*50) calc(var(--u)*16) 0}
@@ -161,7 +157,7 @@ header{background:#000;flex:none;position:relative;z-index:3;padding-top:var(--t
 .msg{display:flex;position:relative;padding:calc(var(--u)*12) calc(var(--u)*16.3) calc(var(--u)*12) calc(var(--u)*32);min-height:calc(var(--u)*93.3);cursor:pointer;text-align:left;width:100%}
 .msg+.msg::before{content:"";position:absolute;top:0;left:calc(var(--u)*84);right:0;height:1px;background:#2f3034}
 .msg .av{margin-right:calc(var(--u)*8.3);margin-top:calc(var(--u)*1)}
-.msg .dot{position:absolute;left:calc(var(--u)*16.7);top:calc(var(--u)*28);width:calc(var(--u)*8);height:calc(var(--u)*8);border-radius:50%;background:#a78bfa}
+.msg .dot{position:absolute;left:calc(var(--u)*16.7);top:calc(var(--u)*28);width:calc(var(--u)*8);height:calc(var(--u)*8);border-radius:50%;background:#ee6a3c}
 .msg .b{flex:1;min-width:0}
 .msg .r1{display:flex;justify-content:space-between;align-items:baseline;gap:calc(var(--u)*8)}
 .msg .nm2{font-size:calc(var(--u)*17.3);color:#eef0f3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -172,11 +168,6 @@ header{background:#000;flex:none;position:relative;z-index:3;padding-top:var(--t
 .msg .pv{margin-top:calc(var(--u)*3)}
 .msg .clip{width:calc(var(--u)*18);height:calc(var(--u)*18);flex:none;fill:none;stroke:#a4a9b1;stroke-width:1.5;stroke-linecap:round}
 .empty{color:#6d7077;text-align:center;padding:calc(var(--u)*80) 0;font-size:calc(var(--u)*15)}
-/* own cancel card in the lesson sheet */
-.lb.off .sj,.lb.off .cl{text-decoration:line-through;text-decoration-color:#ff5c8a;text-decoration-thickness:2px;color:#9aa0a8}
-.xcard{display:none;align-items:center;justify-content:center;gap:calc(var(--u)*8);height:calc(var(--u)*42);background:#e8467c;color:#fff;font-size:calc(var(--u)*17.3);font-weight:600;letter-spacing:.04em}
-.xcard.on{display:flex}
-.xcard svg{width:calc(var(--u)*20);height:calc(var(--u)*20);flex:none;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
 /* sheets (lesson detail, contact) */
 .sheet{position:absolute;left:0;right:0;bottom:0;top:var(--top);z-index:7;background:#1c1c1e;border-radius:calc(var(--u)*30) calc(var(--u)*30) 0 0;transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1),visibility 0s .3s;overflow-y:auto;visibility:hidden}
 .sheet.on{transform:none;visibility:visible;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
@@ -271,10 +262,10 @@ nav{position:absolute;z-index:5;left:calc(var(--u)*23.5);width:calc(var(--u)*348
       </div>
       <div class="weekrow">
         <div class="kw" id="kwbtn"><b id="kwnum">KW</b><strong id="kwmon"></strong></div>
-        <div class="clipx"><div class="days" id="days"></div></div>
+        <div class="days" id="days"></div>
       </div>
     </header>
-    <div id="scroll"><div id="grid"><div id="lines"></div><div class="clipx"><div id="lessons"></div></div></div></div>
+    <div id="scroll"><div id="grid"><div id="lines"></div><div id="lessons"></div></div></div>
   </div>
   <input type="date" id="gotoDate" tabindex="-1" aria-hidden="true">
 
@@ -385,7 +376,6 @@ nav{position:absolute;z-index:5;left:calc(var(--u)*23.5);width:calc(var(--u)*348
     </div>
     <div class="cline" id="lline"></div>
     <div class="lb" id="lbody"></div>
-    <div class="xcard" id="lcancel"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg>ENTFALL</div>
     <button class="hw" id="lhw"><svg class="i" viewBox="0 0 26 26"><path d="M5 22.5h-.5A1.5 1.5 0 013 21V4.5A1.5 1.5 0 014.5 3h11A1.5 1.5 0 0117 4.5V12M6.5 7.5h7M6.5 11h7M6.5 14.5h3"/><path d="M12 18.5l6-3 6 3-6 3zM14.5 19.7v2.6c0 .8 1.6 1.7 3.5 1.7s3.5-.9 3.5-1.7v-2.6"/></svg><span>Hausaufgaben</span><i class="n" id="lhwn">0</i><svg class="chev" viewBox="0 0 9 15"><path d="M1.5 1.5l6 6-6 6"/></svg></button>
   </div>
   <div class="sheet" id="csheet">
@@ -474,7 +464,7 @@ const HOL = [
   ['2027-07-03','2027-08-14','Sommerferien'],['2027-10-11','2027-10-23','Herbstferien'],['2027-12-23','2028-01-08','Weihnachtsferien']
 ];
 const SUBTXT = {WPU:'WPU S...',Lern:'Lern...',Vert:'Vert.'};
-const STATUS = {cancel:['Entfall','#ff5c8a'],change:['Vertretung','#3fbf8f'],exam:['Prüfung','#f2a531']};
+const STATUS = {cancel:['Entfall','#e2344f'],change:['Vertretung','#3fbf8f'],exam:['Prüfung','#f2a531']};
 const MON = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 const MONF = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 const DN = ['Mo.','Di.','Mi.','Do.','Fr.','Sa.','So.'];
@@ -513,7 +503,7 @@ function lessonsOn(date){
   if(wd(date)>4 || holOf(date)) return [];
   return weekData(mondayOf(date)).les.filter(l=>l.d===wd(date)).map(l0=>({l0, l:eff(date,l0)})).filter(x=>x.l).sort((a,b)=>tm(a.l.s)-tm(b.l.s));
 }
-const visibleDays = (s0=start) => { const out=[]; let x = s0; for(let i=0;i<NV;i++){ out.push(x); x = addSchoolDays(x,1); } return out; };
+const visibleDays = () => { const out=[]; let x = start; for(let i=0;i<NV;i++){ out.push(x); x = addSchoolDays(x,1); } return out; };
 
 /* ---------- grid render ---------- */
 function drawStatic(){
@@ -529,14 +519,16 @@ function drawStatic(){
 const teacherHTML = t => typeof t==='string' ? t : t.map(([s,chip,strike])=>`<span class="${chip?'chip':''} ${strike?'strike':''}">${s}</span>`).join('');
 const teacherCodes = t => (typeof t==='string'?t:t.map(x=>x[0]).join('')).split(/,\s*/).filter(Boolean);
 let shown = [];
-const pageStart = d => d===0 ? start : (NV===5 ? addD(start,7*d) : addSchoolDays(start,NV*d));
-function buildPage(s0, sh){
-  const now = new Date(), days = visibleDays(s0);
+function render(){
+  const now = new Date(), days = visibleDays();
   const PW = 348.75/NV, CW = PW-2.35, SW = 11.7, colX = i => 45 + i*PW;
+  $('kwnum').textContent = 'KW ' + kwOf(days[0]);
+  $('kwmon').textContent = MON[days[0].getMonth()];
   let dh = '';
   days.forEach((dt,i)=>{ dh += `<div class="day${iso(dt)===iso(now)?' today':''}" style="left:${U(colX(i)-2)};width:${U(CW+4)}"><b>${DN[wd(dt)]}</b><strong>${dt.getDate()}</strong></div>`; });
   if(NV===5) dh += `<div class="sep" style="left:${U(183.5)}"></div><div class="sep" style="left:${U(322.7)}"></div>`;
-  let h = '';
+  $('days').innerHTML = dh;
+  let h = ''; shown = [];
   days.forEach((dt,i)=>{
     const hol = holOf(dt);
     if(hol){
@@ -553,22 +545,13 @@ function buildPage(s0, sh){
       const c = COL[l.su]||'#999';
       const lines = NV<=2 ? [teacherHTML(l.t), SUBTXT[l.su]||l.su, l.r||l.rr, (l.cls||[]).join(', ')] : [teacherHTML(l.t), SUBTXT[l.su]||l.su, l.r, l.k];
       const ic = (l.ic||[]).map(k=>k==='kebabG'?`<span class="g">${ICON.kebab}</span>`:`<span>${ICON[k]}</span>`).join('');
-      h += `<div class="les ${fut?'fut':''} ${l.st||''}" data-i="${sh.length}" style="left:${U(colX(i))};top:${U(top)};width:${U(narrow?CW-SW-2.3:CW)};height:${U(bot-top)}">
+      h += `<div class="les ${fut?'fut':''} ${l.st||''}" data-i="${shown.length}" style="left:${U(colX(i))};top:${U(top)};width:${U(narrow?CW-SW-2.3:CW)};height:${U(bot-top)}">
         <i class="bar" style="background:${fut?c:mix(c)}"></i><div class="tx">${lines.filter(Boolean).map(x=>`<div>${x}</div>`).join('')}</div>${ic?`<div class="ic">${ic}</div>`:''}</div>`;
-      sh.push({l0,dt});
+      shown.push({l0,dt});
     });
     strips.forEach(s=>{ h += `<div class="strip" style="left:${U(colX(i)+CW-SW)};width:${U(SW)};top:${U(Y(s.s))};height:${U(Y(s.e)-Y(s.s))}">${s.n}</div>`; });
   });
-  return {dh, h};
-}
-function render(){
-  const now = new Date(), days = visibleDays();
-  $('kwnum').textContent = 'KW ' + kwOf(days[0]);
-  $('kwmon').textContent = MON[days[0].getMonth()];
-  shown = [];
-  const P = buildPage(pageStart(-1), []), C = buildPage(start, shown), N = buildPage(pageStart(1), []);
-  $('days').innerHTML = `<div class="pg" style="left:-100%">${P.dh}</div><div class="pg">${C.dh}</div><div class="pg" style="left:100%">${N.dh}</div>`;
-  $('lessons').innerHTML = `<div class="pg nb" style="left:-100%">${P.h}</div><div class="pg">${C.h}</div><div class="pg nb" style="left:100%">${N.h}</div>`;
+  $('lessons').innerHTML = h;
   $('caltxt').textContent = now.getDate();
   renderStart();
 }
@@ -576,22 +559,21 @@ function render(){
 /* ---------- swipe between weeks/days ---------- */
 const layers = () => [$('days'), $('lessons')];
 let sx=null, sy=0, dx=0, drag=null, busy=false;
-const setX = (x, anim) => layers().forEach(el=>{ el.style.transition = anim?'transform .32s cubic-bezier(.25,.8,.3,1)':'none'; el.style.transform = `translate3d(${x}px,0,0)`; });
+const setX = (x, anim) => layers().forEach(el=>{ el.style.transition = anim?'transform .22s ease':'none'; el.style.transform = `translateX(${x}px)`; });
 function go(dir){
   if(busy) return; busy = true;
   const W = $('app').clientWidth;
   setX(-dir*W, true);
-  setTimeout(()=>{ start = pageStart(dir); render(); setX(0,false); busy = false; },330);
+  setTimeout(()=>{ start = NV===5 ? addD(start,7*dir) : addSchoolDays(start,NV*dir); render(); setX(dir*W,false); requestAnimationFrame(()=>requestAnimationFrame(()=>{ setX(0,true); setTimeout(()=>busy=false,230); })); },220);
 }
-let tLast=0, xLast=0, vel=0;
 const plan = $('vplan');
-plan.addEventListener('touchstart', e=>{ const t=e.touches[0]; sx=t.clientX; sy=t.clientY; dx=0; drag=null; vel=0; xLast=0; tLast=performance.now(); },{passive:true});
+plan.addEventListener('touchstart', e=>{ const t=e.touches[0]; sx=t.clientX; sy=t.clientY; dx=0; drag=null; },{passive:true});
 plan.addEventListener('touchmove', e=>{
   if(busy||sx===null) return; const t=e.touches[0]; const ddx=t.clientX-sx, ddy=t.clientY-sy;
   if(drag===null && (Math.abs(ddx)>8||Math.abs(ddy)>8)) drag = Math.abs(ddx)>Math.abs(ddy);
-  if(drag){ e.preventDefault(); const now=performance.now(); if(now>tLast) vel=(ddx-xLast)/(now-tLast); tLast=now; xLast=ddx; dx=ddx; setX(dx,false); }
+  if(drag){ e.preventDefault(); dx=ddx; setX(dx,false); }
 },{passive:false});
-plan.addEventListener('touchend', ()=>{ if(drag){ const W=$('app').clientWidth; if(Math.abs(dx)>W*0.25 || (Math.abs(vel)>0.35 && Math.sign(vel)===Math.sign(dx))) go(dx<0?1:-1); else setX(0,true); } drag=null; sx=null; vel=0; xLast=0; tLast=performance.now(); });
+plan.addEventListener('touchend', ()=>{ if(drag){ if(Math.abs(dx)>60) go(dx<0?1:-1); else setX(0,true); } drag=null; sx=null; });
 let mdown=null, justDragged=false;
 plan.addEventListener('mousedown', e=>{ mdown={x:e.clientX,moved:false}; });
 window.addEventListener('mousemove', e=>{ if(!mdown||busy) return; const d=e.clientX-mdown.x; if(Math.abs(d)>8){ mdown.moved=true; setX(d,false);} });
@@ -638,9 +620,7 @@ function openLesson(l0, dt){
   const st = STATUS[l.st];
   $('lbody').innerHTML = `<div class="cl">${cls.join('<i>|</i>')}</div><div class="sj">${subj}</div>
     ${(l.r||l.rr)?`<div class="rm">${l.r||l.rr}</div>`:''}${teachers.map(t=>`<div class="te">${t}</div>`).join('')}
-    ${st&&l.st!=='cancel'?`<div class="st" style="background:${st[1]};color:#111">${st[0]}</div>`:''}`;
-  $('lbody').classList.toggle('off', l.st==='cancel');
-  $('lcancel').classList.toggle('on', l.st==='cancel');
+    ${st?`<div class="st" style="background:${st[1]};color:#111">${st[0]}</div>`:''}`;
   $('lhwn').textContent = (l.ic||[]).includes(H) ? 1 : 0;
   $('lsheet').scrollTop = 0;
   openSheet($('lsheet'));
@@ -794,7 +774,7 @@ document.querySelectorAll('[data-act]').forEach(el=>el.addEventListener('click',
   const a = el.dataset.act;
   if(a==='set') openSet(); else if(a==='contact') openContact();
   else if(a==='about'){ const sa=navigator.standalone||matchMedia('(display-mode: standalone)').matches;
-    toast('Stundi v13'); }
+    toast('v9 · '+innerHeight+'/'+screen.height+' · top '+$('probe').offsetHeight+' · app '+$('app').offsetHeight+(sa?' · HS':' · Safari')); }
   else toast('Nicht verfügbar');
 }));
 
@@ -831,7 +811,7 @@ document.addEventListener('visibilitychange',()=>{ if(!document.hidden) render()
   }
   apply(); addEventListener('resize', apply);
   /* TEMP: show size check for 4 s at start (remove later) */
-  addEventListener('orientationchange', ()=>setTimeout(apply,300));
+  if (standalone) setTimeout(()=>{ toast('v9 · '+innerHeight+'/'+screen.height+' · top '+document.getElementById('probe').offsetHeight+' · app '+document.getElementById('app').offsetHeight); clearTimeout(tt); tt=setTimeout(()=>toastEl.classList.remove('on'),4000); }, 600); addEventListener('orientationchange', ()=>setTimeout(apply,300));
 })();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){
   let reloaded=false;

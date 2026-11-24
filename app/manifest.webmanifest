@@ -1,6 +1,6 @@
 {
-  "name": "Stundi",
-  "short_name": "Stundi",
+  "name": "Stundenplan",
+  "short_name": "Stundenplan",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
